@@ -1,16 +1,28 @@
 import { DateTime } from "luxon";
 
-const API_KEY = "4b373f7aa4729b41bcea1838da246800";
+const API_KEY = "56382903a0585276d20366416f092726";
 const BASE_URL = "https://api.openweathermap.org/data/2.5";
 
 const getWeatherData = (infoType, searchParams) => {
   const url = new URL(BASE_URL + "/" + infoType);
   url.search = new URLSearchParams({ ...searchParams, appid: API_KEY });
 
-  return fetch(url).then((res) => res.json());
+  return fetch(url)
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`API error: ${res.status} ${res.statusText}`);
+      }
+      return res.json();
+    })
+    .catch((err) => {
+      console.error("API fetch error:", err);
+      return null; // prevent crash
+    });
 };
 
 const formatCurrentWeather = (data) => {
+  if (!data) return null;
+
   const {
     coord: { lat, lon },
     main: { temp, feels_like, temp_min, temp_max, humidity },
@@ -43,40 +55,47 @@ const formatCurrentWeather = (data) => {
 };
 
 const formatForecastWeather = (data) => {
-  let { timezone, daily, hourly } = data;
-  daily = daily.slice(1, 6).map((d) => {
-    return {
-      title: formatToLocalTime(d.dt, timezone, "ccc"),
-      temp: d.temp.day,
-      icon: d.weather[0].icon,
-    };
-  });
+  if (!data || !data.daily || !data.hourly) {
+    console.error("Forecast data incomplete:", data);
+    return { timezone: null, daily: [], hourly: [] };
+  }
 
-  hourly = hourly.slice(1, 6).map((d) => {
-    return {
-      title: formatToLocalTime(d.dt, timezone, "hh:mm a"),
-      temp: d.temp,
-      icon: d.weather[0].icon,
-    };
-  });
+  const { timezone } = data;
+
+  const daily = data.daily.slice(1, 6).map((d) => ({
+    title: formatToLocalTime(d.dt, timezone, "ccc"),
+    temp: d.temp.day,
+    icon: d.weather[0].icon,
+  }));
+
+  const hourly = data.hourly.slice(1, 6).map((d) => ({
+    title: formatToLocalTime(d.dt, timezone, "hh:mm a"),
+    temp: d.temp,
+    icon: d.weather[0].icon,
+  }));
 
   return { timezone, daily, hourly };
 };
 
 const getFormattedWeatherData = async (searchParams) => {
-  const formattedCurrentWeather = await getWeatherData(
-    "weather",
-    searchParams
-  ).then(formatCurrentWeather);
+  const currentData = await getWeatherData("weather", searchParams);
+  const formattedCurrentWeather = formatCurrentWeather(currentData);
+
+  if (!formattedCurrentWeather) {
+    console.warn("Current weather data is null — skipping forecast.");
+    return null;
+  }
 
   const { lat, lon } = formattedCurrentWeather;
 
-  const formattedForecastWeather = await getWeatherData("onecall", {
+  const forecastData = await getWeatherData("onecall", {
     lat,
     lon,
     exclude: "current,minutely,alerts",
     units: searchParams.units,
-  }).then(formatForecastWeather);
+  });
+
+  const formattedForecastWeather = formatForecastWeather(forecastData);
 
   return { ...formattedCurrentWeather, ...formattedForecastWeather };
 };
@@ -91,5 +110,4 @@ const iconUrlFromCode = (code) =>
   `http://openweathermap.org/img/wn/${code}@2x.png`;
 
 export default getFormattedWeatherData;
-
 export { formatToLocalTime, iconUrlFromCode };
