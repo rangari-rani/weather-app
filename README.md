@@ -1,70 +1,85 @@
-# Getting Started with Create React App
+# 🌦️ React Weather App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern weather forecast application built with **React**, **Tailwind CSS**, and **Luxon**, powered by the [OpenWeatherMap API](https://openweathermap.org/api). It gives real-time weather conditions, hourly and daily forecasts, and handles timezone conversions manually for accuracy.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🚀 Live Demo
 
-### `npm start`
+👉 [Try it on Vercel](https://weather-app-bice-alpha-21.vercel.app/)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 📸 Screenshots
 
-### `npm test`
+> Add your screenshots here after deployment (`public/ss1.png`, `ss2.png`...)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+| Home | Forecast |
+|------|----------|
+| ![Screenshot 1](https://github.com/rangari-rani/weather-app/blob/b88ee15722120604f1677292df8ca919bf1430e2/page1.png) 
+![Screenshot 2](https://github.com/rangari-rani/weather-app/blob/b88ee15722120604f1677292df8ca919bf1430e2/page2.png)  
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## ✨ Features
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- 🔍 City-based search (e.g., Mumbai, Berlin)
+- 📍 Get current location weather using browser GPS
+- 🌡️ Toggle between Celsius (°C) and Fahrenheit (°F)
+- ⏳ Accurate 5-day forecast (daily at 12PM)
+- 🕒 Real-time hourly forecast (next 5 entries)
+- ⚠️ Toast notifications for loading state and errors
+- 💡 Mobile responsive UI with Tailwind CSS
+- 🌐 **Manual timezone correction** using UTC offset
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## 🧠 Notable Challenge Solved
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 🕒 Accurate Local Forecast Time using `/forecast` API
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Unlike `/onecall`, OpenWeather's `/forecast` API returns only a raw `timezone` offset in seconds (e.g., `19800` for India).  
+Instead of hardcoding or defaulting to UTC, this app:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- Adjusts all timestamps by `dt + timezone`
+- Uses **Luxon** to format corrected time in readable form
+- Ensures that forecast times match the **real local time** of the selected city
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+This avoids the common bug where apps show wrong dates like “27 July” instead of “13 July” for cities like Nagpur.
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 🛠️ Tech Stack
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- [React](https://reactjs.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Luxon](https://moment.github.io/luxon/)
+- [React Toastify](https://fkhadra.github.io/react-toastify/)
+- [OpenWeatherMap API](https://openweathermap.org/api)
 
-### Code Splitting
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 📁 Folder Structure (Monorepo)
 
-### Analyzing the Bundle Size
+```
+weather-app/
+├── public/
+├── src/
+│ ├── components/   # Forecast, Inputs, TemperatureDetails, TimeAndLocation, TopButtons
+│ ├── weather/      # API and data formatting logic
+│ ├── App.js
+│ └── index.js
+├── tailwind.config.js
+└── package.json
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
+## ⚙️ Setup Instructions
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+1. **Clone this repo**
+   ```bash
+   git clone https://github.com/rangari-rani/weather-app.git
+   cd weather-app
+```
 
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
