@@ -4,19 +4,30 @@ A modern weather forecast application built with **React**, **Tailwind CSS**, an
 
 ---
 
-## 🚀 Live Demo
+## 🚀 Live Demo -  [Try it on Vercel](https://weather-app-bice-alpha-21.vercel.app/)
 
-👉 [Try it on Vercel](https://weather-app-bice-alpha-21.vercel.app/)
+---
+
+## 📚 About This Project
+
+This weather app was originally built during my MCA in 2022 as part of my early learning journey in React, APIs & UI design using Tailwind CSS.  
+While I now focus on more advanced full-stack and scalable applications, this project reflects my strong foundation in frontend logic and API integration.  
+
+---
+
+## 🛠️ Tech Stack
+
+- [React](https://reactjs.org/) : A powerful JavaScript library for building fast, interactive user interfaces using components.  
+- [Tailwind CSS](https://tailwindcss.com/) : A utility-first CSS framework for building modern, responsive UIs with ease.
+- [Luxon](https://moment.github.io/luxon/) : A modern JavaScript library for handling dates and times with timezone and formatting support.
+- [React Toastify](https://fkhadra.github.io/react-toastify/) : A simple library to show elegant, customizable toast notifications in React.
+- [OpenWeatherMap API](https://openweathermap.org/api) : A free weather API that provides current, hourly, and forecasted weather data for any location.  
 
 ---
 
 ## 📸 Screenshots
 
-> Add your screenshots here after deployment (`public/ss1.png`, `ss2.png`...)
-
-| Home | Forecast |
-|------|----------|
-| ![Screenshot 1](https://github.com/rangari-rani/weather-app/blob/b88ee15722120604f1677292df8ca919bf1430e2/page1.png) 
+![Screenshot 1](https://github.com/rangari-rani/weather-app/blob/b88ee15722120604f1677292df8ca919bf1430e2/page1.png) 
 ![Screenshot 2](https://github.com/rangari-rani/weather-app/blob/b88ee15722120604f1677292df8ca919bf1430e2/page2.png)  
 
 ---
@@ -49,16 +60,6 @@ This avoids the common bug where apps show wrong dates like “27 July” instea
 
 ---
 
-## 🛠️ Tech Stack
-
-- [React](https://reactjs.org/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Luxon](https://moment.github.io/luxon/)
-- [React Toastify](https://fkhadra.github.io/react-toastify/)
-- [OpenWeatherMap API](https://openweathermap.org/api)
-
----
-
 ## 📁 Folder Structure (Monorepo)
 
 ```
@@ -81,5 +82,45 @@ weather-app/
    ```bash
    git clone https://github.com/rangari-rani/weather-app.git
    cd weather-app
-```
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Add your API key**
+   
+ - Get a free key from OpenWeatherMap  
+ - Paste it in src/weather/weatherService.js:
+
+   ```bash
+   const API_KEY = "your_api_key_here";
+   ```
+
+4. **Run the app**
+
+   ```bash
+   npm run start
+   ```
+
+5. **Build for production**
+
+   ```bash
+   npm run build
+   ```
+
+---
+
+## 📜 License
+
+[MIT License](LICENSE)
+
+---
+
+## 📬 Contact
+
+-  This was one of my early React projects from my MCA days. Feel free to explore my latest work on GitHub or LinkedIn! 
+- 📫 Connect with me on [LinkedIn – Rani Rangari](https://www.linkedin.com/in/rani-rangari/)  
+⭐ If you found this project helpful, consider giving it a star!
 
