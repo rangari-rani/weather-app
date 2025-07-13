@@ -60,26 +60,26 @@ const formatForecastWeather = (data) => {
     return { timezone: null, daily: [], hourly: [] };
   }
 
-  const timezone = data.city.timezone;
+  const timezoneOffset = data.city.timezone;
 
-  // 🌤️ Daily Forecast: 5 entries at 12:00 PM
+  // 🌤️ Daily Forecast: next 5 days at 12:00 PM
   const daily = data.list
     .filter((item) => item.dt_txt.includes("12:00:00"))
     .slice(0, 5)
     .map((d) => ({
-      title: formatToLocalTime(d.dt, timezone, "ccc"),
+      title: formatToLocalTime(d.dt, timezoneOffset, "ccc"),
       temp: d.main.temp,
       icon: d.weather[0].icon,
     }));
 
-  // 🕒 Hourly Forecast: next 5 entries (next 15 hours approx)
+  // 🕒 Hourly Forecast: next 5 entries (approx. 15 hours)
   const hourly = data.list.slice(0, 5).map((d) => ({
-    title: formatToLocalTime(d.dt, timezone, "hh:mm a"),
+    title: formatToLocalTime(d.dt, timezoneOffset, "hh:mm a"),
     temp: d.main.temp,
     icon: d.weather[0].icon,
   }));
 
-  return { timezone, daily, hourly };
+  return { timezone: timezoneOffset, daily, hourly };
 };
 
 const getFormattedWeatherData = async (searchParams) => {
@@ -91,16 +91,22 @@ const getFormattedWeatherData = async (searchParams) => {
     q: searchParams.q,
     units: searchParams.units,
   });
+
   const formattedForecast = formatForecastWeather(forecast);
 
   return { ...formattedCurrent, ...formattedForecast };
 };
 
+// ✅ Correct timezone offset handling
 const formatToLocalTime = (
   secs,
-  zone,
+  offsetInSeconds,
   format = "cccc, dd LLL yyyy' | Local time: 'hh:mm a"
-) => DateTime.fromSeconds(secs).setZone(zone).toFormat(format);
+) => {
+  return DateTime.fromSeconds(secs + offsetInSeconds)
+    .toUTC()
+    .toFormat(format);
+};
 
 const iconUrlFromCode = (code) =>
   `http://openweathermap.org/img/wn/${code}@2x.png`;
